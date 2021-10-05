@@ -53,6 +53,6 @@ $ docker-compose down
 | ------ | --------------- | -------------------------- |
 | GET    | /api/users      | Retrieves a list of users  |
 | POST   | /api/users      | Creates a user             |
-| GET    | /api/heroes/:id | Obtains user by id         |
-| PUT    | /api/heroes/:id | Updates user               |
-| DELETE | /api/heroes/:id | Deletes user               |
+| GET    | /api/users/:id | Obtains user by id          |
+| PUT    | /api/users/:id | Updates user                |
+| DELETE | /api/users/:id | Deletes user                |
