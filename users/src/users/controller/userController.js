@@ -28,7 +28,7 @@ module.exports.list = async (req, res) => {
   };
   
   module.exports.update = async (req, res) => {
-    const user= await Hero.findOneAndUpdate({ _id: req.params.id }, req.body, {
+    const user= await User.findOneAndUpdate({ _id: req.params.id }, req.body, {
       new: true
     });
   
