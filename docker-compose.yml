@@ -13,6 +13,7 @@ services:
       - app-network
     links:
       - users
+      - inventary
 
   users:
     build:
@@ -22,6 +23,17 @@ services:
       - "3000:3000"
     volumes:
       - ./users:/usr/src/app
+    networks:
+      - app-network
+
+  inventary:
+    build:
+      context: ./inventary
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./inventary:/usr/src/app
     networks:
       - app-network
   

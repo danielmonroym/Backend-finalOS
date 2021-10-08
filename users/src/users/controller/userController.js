@@ -32,7 +32,7 @@ module.exports.list = async (req, res) => {
       new: true
     });
   
-    res.json(hero);
+    res.json(user);
   };
   
   module.exports.view = async (req, res) => {
