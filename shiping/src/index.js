@@ -18,6 +18,6 @@ mongoose.connection.on('error', (err) => {
   winston.error(err.message);
 });
 
-app.listen(6000, () => {
-    console.log('Listening on port 6000');
+app.listen(4000, () => {
+    console.log('Listening on port 4000');
 });

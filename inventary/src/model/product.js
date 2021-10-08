@@ -42,7 +42,11 @@ const productSchema= new mongoose.Schema({
     },
     comentarios:{
         type: [Object]
-    }
+    },
+    precio:{
+        type: Number,
+        required: [true, 'Es necesario agregar un precio']
+    },
 });
 
 module.exports = mongoose.model('product', productSchema);

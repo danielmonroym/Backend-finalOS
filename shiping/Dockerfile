@@ -7,6 +7,6 @@ VOLUME [ "/usr/src/app" ]
 RUN npm i -g nodemon
 
 
-EXPOSE 6000
+EXPOSE 4000
 
 CMD [ "nodemon", "-L", "src/index.js"]

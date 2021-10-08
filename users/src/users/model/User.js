@@ -19,7 +19,10 @@ const UserSchema= new mongoose.Schema({
         type: String,
         required: [true, 'Please add a password'],
         minLength: 6,
-        select: false
+    },
+    rol:{
+        type:String,
+        default:"USER"  
     }
 
 });

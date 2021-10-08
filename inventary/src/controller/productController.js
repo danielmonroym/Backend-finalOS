@@ -1,14 +1,16 @@
 const Product = require('../model/product')
+const Factura = require('../model/factura')
 
 const crearProducto = async (req, res) => {
     const {titulo, isbn, generos, editorial, autor,
-    fechaPublicacion, descripcion, cantidad} = req.body
+    fechaPublicacion, descripcion, cantidad,precio} = req.body
     const product = await Product.create({
         titulo: titulo, 
         isbn: isbn,
         generos: generos,
         editorial: editorial,
         autor: autor,
+        precio: precio,
         cantidad: cantidad,
         estado: 'disponible',
         fechaPublicacion: fechaPublicacion,
@@ -33,7 +35,7 @@ const eliminarProducto = async (req, res) => {
 const actualizarProducto = async (req, res) => {
     const {producId} = req.params
     const {titulo, isbn, generos, editorial, autor, estado,
-        fechaPublicacion, descripcion, comentarios, puntuacion, cantidad} = req.body
+        fechaPublicacion, descripcion, precio, comentarios, puntuacion, cantidad} = req.body
 
     const product = await Product.findByIdAndUpdate({_id: producId},
          {
@@ -43,6 +45,7 @@ const actualizarProducto = async (req, res) => {
             editorial: editorial,
             cantidad: cantidad,
             autor: autor,
+            precio: precio,
             estado: estado,
             fechaPublicacion: fechaPublicacion,
             descripcion: descripcion,
@@ -115,20 +118,30 @@ const comentarProducto = async (req, res) => {
 }
 
 const comprarProducto = async (req, res) => {
-    const {producId, userId} = req.body
-    const libro = await Product.findById(producId)
-    if(libro.cantidad > 0){
-    await Product.findOneAndUpdate({_id: producId}, {cantidad: libro.cantidad - 1})
-    .catch(err => { return res.status(500).send(err)})
-    return res.json({
-        message: `Producto comprado con exito, su informacion fue enviada al vertival de envios para validar su informacion`,
-        userId: userId,
-        productId: producId
-    })
+    const {producsId, userId} = req.body
+    let totalValor = 0
+    for (element of producsId) {
+        const libro = await Product.findById(element)
+        if(libro.cantidad > 0){
+            await Product.findOneAndUpdate({_id: producId}, {cantidad: libro.cantidad - 1})
+            .catch(err => { return res.status(500).send(err)})
+            totalValor = totalValor + libro.precio
+        }else {
+            await Product.findOneAndUpdate({_id: producId}, {estado: 'sin stock'})
+            return res.json({
+                message: `Producto sin stock, trabajaremos para resolverlo pronto`
+            })
+        }
     }
-    await Product.findOneAndUpdate({_id: producId}, {estado: 'sin stock'})
+
+    await Factura.create({ccUsuario: userId, productos: producsId, total: totalValor, estado: 'Facturado'})
+
     return res.json({
-        message: `Producto sin stock, trabajaremos para resolverlo pronto`
+        message: `Productos comprado con exito`,
+        userId: userId,
+        productId: producId,
+        products: products,
+        total: totalValor
     })
 }
 
