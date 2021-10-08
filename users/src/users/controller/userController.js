@@ -1,11 +1,13 @@
 const User = require('../model/User');
+const jwt = require('jsonwebtoken')
 
 module.exports.create = async (req, res) => {
 
     User.create({
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
+        rol: req.body.rol
     }, (err, user) => {
         if (err) return res.status(500).send("Registration failed")
 
@@ -16,6 +18,19 @@ module.exports.create = async (req, res) => {
 
 
 };
+
+module.exports.signin = async (req, res) => {
+  const user = await User.findOne({email:req.body.email});
+  if(!user) return res.status(500).send("User not found")
+
+  if(user.password != req.body.password) return res.status(401).json({toke:null,message:"Invalid password"})
+
+  const token = jwt.sign({id:user.id,rol:user.rol,email:user.email},"users-api",{
+    expiresIn:86400
+  })
+  res.json({token})
+};
+
 
 module.exports.list = async (req, res) => {
     const users = await User.find();

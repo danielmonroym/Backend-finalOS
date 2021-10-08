@@ -2,7 +2,7 @@ const express = require('express');
 const catchErrors = require('express-catch-errors');
 
 const router = express.Router();
-const { create, list, remove, update, view } = require('../controller/userController');
+const { create, list, remove, update, view,signin } = require('../controller/userController');
 
 
 router
@@ -15,5 +15,9 @@ router
   .get(catchErrors(view))
   .put(catchErrors(update))
   .delete(catchErrors(remove));
+
+router
+  .route('/signin')
+  .post(catchErrors(signin))
 
   module.exports = router;

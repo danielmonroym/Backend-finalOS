@@ -13,9 +13,6 @@ module.exports.create = async (req, res) => {
       },
   }, (err, shiping) => {
       if (err) return res.status(500).send("Registration failed")
-
-
-
       res.status(200).json(shiping)
   })
 
